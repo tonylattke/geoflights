@@ -1,0 +1,29 @@
+<% content_for :app_controller do %>
+  ng-app='app.geoflightsApp' ng-controller='HomeCtrl'
+<% end %>
+
+<div class="container-fluid">
+    <h1>Geoflight Lattke</h1>
+    <div class="row-fluid">
+        <div class="col-md-2">
+            <div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid sss">
+                <ul class="nav navmenu-nav">
+                    <li><a href="http://www.jasny.net/bootstrap/examples/navmenu-push/">Select Country</a></li>
+                    <li><a href="http://www.jasny.net/bootstrap/examples/navmenu-reveal/">Select Airport</a></li>
+                    <li><a href="http://www.jasny.net/bootstrap/examples/navbar-offcanvas/">Selct Airline</a></li>
+
+                    <li><a href="#" ng-click="resetCamera()">Reset camera</a></li>
+                </ul>
+            </div>
+            <div class="col-md-12">
+                <div id="info">No countries selected</div>
+                <input type="button" ng-click="resetCamera()" value="Select Feature" />
+            </div>
+        </div>
+        <div class="col-md-10 map-background">
+            <div class="span">
+                <div id="map" class="map"></div>
+            </div>
+        </div>
+    </div>
+</div>
