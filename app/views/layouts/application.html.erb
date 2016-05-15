@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Geoflights</title>
+  <title>Geoflights Lattke</title>
   <meta charset="utf-8">
   <%= stylesheet_link_tag    'application', media: 'all'%>
   <!-- JQuery -->  
@@ -26,7 +26,13 @@
 </head>
 <body <%= yield :app_controller %>>
 
-	<%= yield %>
+  <div class="container-fluid">
+    <h1>
+      <%= image_tag("logo_tony.png", :alt => "rss feed", :id => "logo") %>
+      Geoflights Lattke
+    </h1>
+  	<%= yield %>
+  </div>
 
   <footer class="text-center">
     <div class="footer-below">

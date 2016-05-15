@@ -1,6 +1,7 @@
 <% content_for :app_controller do %>
-  ng-app='app.geoflightsApp' ng-controller='HomeCtrl'
+  ng-app='app.geoflightsApp' ng-controller='ConnectionsCtrl' ng-init="init('<%= @route %>', '<%= @airport_id %>', '<%= @airport_name %>', '<%= @airport_latitude %>', '<%= @airport_longitude %>')"
 <% end %>
+
 
 <div class="row-fluid">
     <div class="col-md-2">
@@ -15,12 +16,9 @@
             </ul>
         </div>
         <div class="col-md-12 status">
-            <div ng-if="selected_airport.status">
-                <h3>Status</h3>
-                <p>Selected Airport -> </p>
-                <p>{{selected_airport.name}} ({{selected_airport.country}})</p>
-                <li ng-click="showDestinations(selected_airport.id)"><a>Show destinations</a></li>
-                <li ng-click="showOrigins(selected_airport.id)"><a>Show origins</a></li>
+            <div>
+                <h3>Selected Airport</h3>
+                <p>{{ airport.name }}</p>
             </div>
         </div>
         <div class="col-md-12 coordinates">

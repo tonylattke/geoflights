@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'home#index'
+  get 'home' => 'home#index'
+
+  get 'connections_airports/:route/:id/:name/:latitude/:longitude' => 'home#connections_airports', :constraints => {:latitude => /\-?\d+(.\d+)?/, :longitude => /\-?\d+(.\d+)?/}
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

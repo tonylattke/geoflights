@@ -3,6 +3,10 @@ body {
     color: #00FFFC;
 }
 
+#logo {
+    height: 50px;
+}
+
 .map-background {
     background-color: #000000;
     border-style: solid;
@@ -66,4 +70,27 @@ body {
         background: none;
         border: none;
     }
+}
+
+.status {
+    height: 405px;
+}
+
+.coordinates {
+    border-style: solid;
+    border-color: #00FFFC;
+}
+
+li a {
+    display: block;
+    text-decoration: none;
+    color: #000000;
+    background-color: #00FFFC;
+    border-style: solid;
+    border-color: #000000;
+}
+li a:hover {
+    text-decoration: none;
+    color: #000000;
+    background: #00A4A2;
 }

@@ -1,8 +1,19 @@
 angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)->
 
-    ################################   Layers  ################################
+    $scope.selected_airport = {
+        status: false
+        id: 0
+        name: ''
+        country: ''
+        latitude: 0
+        longitude: 0
+    }
+    $scope.current_coordinate = {
+        longitude: 0,
+        latitude: 0
+    }
     
-    $scope.total = 0    
+    ################################   Layers  ################################
 
     # Countries
 
@@ -61,7 +72,7 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
 
     ################################   View   #################################
 
-    vw = new ol.View({
+    view = new ol.View({
         center: [0,0],
         zoom: 2.75,
         maxZoom: 7,
@@ -70,11 +81,11 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
     
     ################################   Map   ##################################
 
-    map = new ol.Map({
+    $scope.map = new ol.Map({
         layers: _layers,
         renderer: 'canvas',
         target: 'map',
-        view: vw,
+        view: view,
         controls: controls
     })
 
@@ -82,14 +93,16 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
 
     # A normal select interaction to handle click
     select = new ol.interaction.Select({condition: ol.events.condition.click})
-    map.addInteraction(select)
+    $scope.map.addInteraction(select)
 
     selected_countries = []
 
     extent = 1
 
-    map.on('click', 
+    $scope.map.on('click', 
         (event) ->
+            selected_countries = []
+
             x = event.coordinate[0]
             y = event.coordinate[1]
             testv = 70000
@@ -98,25 +111,100 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
                 (feature) ->
                     selected_countries.push(feature)
             )
-            #console.log(selected_countries)
-            selectedFeatures = select.getFeatures()
-            console.log(selectedFeatures)
+            
+            if selected_countries.length > 0
+                console.log(selected_countries[0])
+                $scope.selected_airport = {
+                    status: true
+                    id: selected_countries[0].get('airport_id'),
+                    name: selected_countries[0].get('name'),
+                    country: selected_countries[0].get('country')
+                    latitude: selected_countries[0].get('latitude')
+                    longitude: selected_countries[0].get('longitude')
+                }
+            else
+                $scope.selected_airport = {
+                    status: false
+                    id: 0
+                    name: ''
+                    country: ''
+                    latitude: 0
+                    longitude: 0
+                }
+
+            # selectedFeatures = select.getFeatures()
+            # console.log(selectedFeatures)
             # selectedFeatures.clear()
+
+            $scope.$apply();
     )
 
-    map.on('pointermove', 
+    $scope.map.on('pointermove', 
         (event) ->
             coord3857 = event.coordinate
             coord4326 = ol.proj.transform(coord3857, 'EPSG:3857', 'EPSG:4326')
-            #console.log(coord3857, coord4326)
+            $scope.current_coordinate = {
+                longitude: coord4326[0],
+                latitude: coord4326[1]
+            }
+            $scope.$apply();
     )
 
     ###########################################################################
+    $scope.showAirlines = (country) ->
+        alert(country)
+
+    $scope.showDestinations = (airport_id) ->
+        window.location.href = "/connections_airports/destiny/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
+
+    $scope.showOrigins = (airport_id) ->
+        alert(airport_id)
+
+    ###########################################################################
+
+    bounce = (t) ->
+        s = 7.5625
+        p = 2.75
+        l = 0
+        
+        if t < (1 / p)
+            l = s * t * t
+        else
+            if t < (2 / p)
+                t -= (1.5 / p)
+                l = s * t * t + 0.75
+            else
+                if (t < (2.5 / p))
+                    t -= (2.25 / p)
+                    l = s * t * t + 0.9375
+                else
+                    t -= (2.625 / p)
+                    l = s * t * t + 0.984375            
+        
+        return l
+
+    elastic = (t) ->
+        return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1
 
     $scope.resetCamera = ->
-        # Reset zoom
-        vw.setZoom(2.75);
+        duration = 2000;
+        start = +new Date();
+        pan = ol.animation.pan({
+            duration: duration,
+            source: view.getCenter(),
+            start: start
+        })
+        bounce = ol.animation.bounce({
+            duration: duration,
+            resolution: 2*view.getResolution(),
+            start: start
+        })
+        $scope.map.beforeRender(pan,bounce)
+        
+        view.setCenter([0,0])
 
-        # Reset center
-        vw.setCenter([0,0]);
+    $scope.resetZoom = ->
+        # Reset zoom
+        view.setZoom(2.75)
+
 ])
