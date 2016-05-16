@@ -89,7 +89,7 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
             countries_layer,
             #lineLayer,
             airports_layer,
-            #pointLayer            
+            #pointLayer
         ]
 
         ################################ Controls #################################

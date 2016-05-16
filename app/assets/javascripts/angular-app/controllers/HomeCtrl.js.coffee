@@ -158,7 +158,7 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
         window.location.href = "/connections_airports/destiny/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
 
     $scope.showOrigins = (airport_id) ->
-        alert(airport_id)
+        window.location.href = "/connections_airports/source/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
 
     ###########################################################################
 

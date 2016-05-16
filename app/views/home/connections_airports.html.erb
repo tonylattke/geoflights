@@ -2,36 +2,16 @@
   ng-app='app.geoflightsApp' ng-controller='ConnectionsCtrl' ng-init="init('<%= @route %>', '<%= @airport_id %>', '<%= @airport_name %>', '<%= @airport_latitude %>', '<%= @airport_longitude %>')"
 <% end %>
 
+<div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid navmenu-float">
+    <ul class="nav navmenu-nav">
+        <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
+        <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
+    </ul>
+</div>
 
-<div class="row-fluid">
-    <div class="col-md-2">
-        <div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid sss">
-            <ul class="nav navmenu-nav">
-                <li><a href="/home">Select Country</a></li>
-                <li><a href="/home">Select Airport</a></li>
-                <li><a href="/home">Select Airline</a></li>
-
-                <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
-                <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
-            </ul>
-        </div>
-        <div class="col-md-12 status">
-            <div>
-                <h3>Selected Airport</h3>
-                <p>{{ airport.name }}</p>
-            </div>
-        </div>
-        <div class="col-md-12 coordinates">
-            <div>
-                <h3>Coordinates</h3>
-                <p>Longitude: {{current_coordinate.longitude}}</p>
-                <p>Latitude: {{current_coordinate.latitude}}</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10 map-background">
-        <div class="span">
-            <div id="map" class="map"></div>
-        </div>
+<div class="col-md-12 status">
+    <div>
+        <h3>Selected Airport</h3>
+        <p>{{ airport.name }}</p>
     </div>
 </div>

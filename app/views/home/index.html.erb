@@ -2,38 +2,20 @@
   ng-app='app.geoflightsApp' ng-controller='HomeCtrl'
 <% end %>
 
-<div class="row-fluid">
-    <div class="col-md-2">
-        <div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid sss">
-            <ul class="nav navmenu-nav">
-                <li><a href="/home">Select Country</a></li>
-                <li><a href="/home">Select Airport</a></li>
-                <li><a href="/home">Select Airline</a></li>
+<div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid navmenu-float">
+    <ul class="nav navmenu-nav">
+        <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
+        <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
+    </ul>
+</div>
 
-                <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
-                <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
-            </ul>
-        </div>
-        <div class="col-md-12 status">
-            <div ng-if="selected_airport.status">
-                <h3>Status</h3>
-                <p>Selected Airport -> </p>
-                <p>{{selected_airport.name}} ({{selected_airport.country}})</p>
-                <li ng-click="showDestinations(selected_airport.id)"><a>Show destinations</a></li>
-                <li ng-click="showOrigins(selected_airport.id)"><a>Show origins</a></li>
-            </div>
-        </div>
-        <div class="col-md-12 coordinates">
-            <div>
-                <h3>Coordinates</h3>
-                <p>Longitude: {{current_coordinate.longitude}}</p>
-                <p>Latitude: {{current_coordinate.latitude}}</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10 map-background">
-        <div class="span">
-            <div id="map" class="map"></div>
-        </div>
+<div class="col-md-12 status">
+    <div ng-if="selected_airport.status">
+        <h3>Selected Aiport</h3>
+        <p><b>{{selected_airport.name}}</b> ({{selected_airport.country}})</p>
+        <p><b>Longitude:</b> {{selected_airport.longitude}}</p>
+        <p><b>Latitude:</b> {{selected_airport.latitude}}</p>
+        <li ng-click="showDestinations(selected_airport.id)"><a>Show destinations</a></li>
+        <li ng-click="showOrigins(selected_airport.id)"><a>Show origins</a></li>
     </div>
 </div>

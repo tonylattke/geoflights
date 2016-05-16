@@ -1,11 +1,50 @@
+/* ---------------------------- General settings --------------------------- */
+
 body {
     background-color: #000000;
     color: #00FFFC;
 }
 
+/* ----------------------------       Logo       --------------------------- */
+
 #logo {
-    height: 50px;
+  animation: logo-entry 4s ease-in; 
+  width: 45px;
+  height: 50px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 40;
 }
+
+h1 {
+    animation: text-glow 2s ease-out infinite alternate;
+    color: #00a4a2;
+    font-weight: bold;
+    font-style: italic;
+    text-transform: uppercase;
+    text-shadow:0 0 10px #000, 0 0 20px #000, 0 0 30px #000, 0 0 40px #000, 0 0 50px #000, 0 0 60px #000, 0 0 70px #000;
+}
+
+h1::before {
+    animation: before-glow 2s ease-out infinite alternate;
+}
+
+h1::after {
+    animation: after-glow 2s ease-out infinite alternate;
+}
+
+@keyframes text-glow {
+  0% {
+    color: #00a4a2;
+    text-shadow:0 0 10px #000, 0 0 20px #000, 0 0 30px #000, 0 0 40px #000, 0 0 50px #000, 0 0 60px #000, 0 0 70px #000;
+  } 
+  100% {
+    color: #00FFFC;
+    text-shadow: 0 0 20px rgba(0, 255, 253, .6), 0 0 10px rgba(0, 255, 253, .4), 0 2px 0 #000;
+  }
+}
+
+/* ----------------------------       Map        --------------------------- */
 
 .map-background {
     background-color: #000000;
@@ -17,11 +56,9 @@ body {
     height: 750px;
 }
 
-.autor {
-    color: #00FFFC
-}
+/* ---------------------------      navmenu      --------------------------- */
 
-.sss {
+.navmenu-float {
     left: 0px; 
     right: 1555px;
 }
@@ -51,6 +88,40 @@ body {
     background: #00A4A2;
 }
 
+/* ----------------------------      Status      --------------------------- */
+
+.status {
+    height: 405px;
+}
+
+.coordinates {
+    border-style: solid;
+    border-color: #00FFFC;
+}
+
+li a {
+    display: block;
+    text-decoration: none;
+    color: #000000;
+    background-color: #00FFFC;
+    border-style: solid;
+    border-color: #000000;
+    cursor: pointer;
+}
+
+li a:hover {
+    text-decoration: none;
+    color: #000000;
+    background: #00A4A2;
+}
+
+
+/* ----------------------------      Footer      --------------------------- */
+
+.autor {
+    color: #00FFFC
+}
+
 .footer-credits {
     padding-top: 20px;
 }
@@ -70,27 +141,4 @@ body {
         background: none;
         border: none;
     }
-}
-
-.status {
-    height: 405px;
-}
-
-.coordinates {
-    border-style: solid;
-    border-color: #00FFFC;
-}
-
-li a {
-    display: block;
-    text-decoration: none;
-    color: #000000;
-    background-color: #00FFFC;
-    border-style: solid;
-    border-color: #000000;
-}
-li a:hover {
-    text-decoration: none;
-    color: #000000;
-    background: #00A4A2;
 }
