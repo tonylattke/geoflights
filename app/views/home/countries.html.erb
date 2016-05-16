@@ -1,0 +1,47 @@
+<% content_for :app_controller do %>
+  ng-app='app.geoflightsApp' ng-controller='CountriesCtrl'
+<% end %>
+
+<div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid navmenu-float">
+    <ul class="nav navmenu-nav">
+        <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
+        <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
+    </ul>
+</div>
+
+<div class="col-md-12 status">
+    <div ng-if="selected_country.status">
+        <h3>Selected Country</h3>
+        <p><b>{{selected_country.name}}</b></p>
+        <p>Available Airlines:</p>
+        <ul class="airlines">
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+            <li ng-repeat="airline in selected_country.airlines">
+                {{airline}}
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,12 +1,9 @@
-angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)->
+angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$http', ($scope,$http)->
 
-    $scope.selected_airport = {
-        status: false
-        id: 0
-        name: ''
-        country: ''
-        latitude: 0
-        longitude: 0
+    $scope.selected_country = {
+        status: true
+        name: 'Sample'
+        airlines:['1','2']
     }
     $scope.current_coordinate = {
         longitude: 0,
@@ -17,50 +14,32 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
 
     # Countries
 
-    countries_source = new ol.source.TileWMS({
-        url: 'http://localhost:8080/geoserver/kss/wms',
-        params: {
-            'LAYERS': 'kss:countries'
-        }
-    })
-
-    countries_layer = new ol.layer.Tile({
-        source:  countries_source
-    })
-
-    # Airports
-
-    airports_source = new ol.source.Vector({
-        #url: 'http://openlayers.org/en/v3.15.1/examples/data/geojson/countries.geojson',
-        url: 'airports.json',
+    countries_source = new ol.source.Vector({
+        url: 'countries.geojson',
         format: new ol.format.GeoJSON()
     })
 
-    airports_styles = [
+    countries_styles = [
         new ol.style.Style({
-            image: new ol.style.Circle({
-              radius: 3,
               stroke: new ol.style.Stroke({
-                color: 'white',
+                color: '#00FFFC',
                 width: 1
               }),
               fill: new ol.style.Fill({
-                color: '#00FFFC'
+                color: '#004241'
               })
-            })
           })
     ]
 
-    airports_layer = new ol.layer.Vector({
-        source: airports_source,
-        style: airports_styles
+    countries_layer = new ol.layer.Vector({
+        source: countries_source
+        style: countries_styles
     })
 
     # Main layers list
 
     _layers = [
-        countries_layer,
-        airports_layer
+        countries_layer
     ]
 
     ################################ Controls #################################
@@ -107,34 +86,37 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
             y = event.coordinate[1]
             testv = 70000
             extent = [x-testv, y-testv, x+testv, y+testv]
-            airports_source.forEachFeatureIntersectingExtent(extent, 
+            countries_source.forEachFeatureIntersectingExtent(extent, 
                 (feature) ->
                     selected_countries.push(feature)
             )
             
             if selected_countries.length > 0
                 console.log(selected_countries[0])
-                $scope.selected_airport = {
+                $scope.selected_country = {
                     status: true
-                    id: selected_countries[0].get('airport_id'),
-                    name: selected_countries[0].get('name'),
-                    country: selected_countries[0].get('country')
-                    latitude: selected_countries[0].get('latitude')
-                    longitude: selected_countries[0].get('longitude')
-                }
-            else
-                $scope.selected_airport = {
-                    status: false
-                    id: 0
-                    name: ''
-                    country: ''
-                    latitude: 0
-                    longitude: 0
+                    name: selected_countries[0].get('name')
+                    airlines:[]
                 }
 
-            # selectedFeatures = select.getFeatures()
-            # console.log(selectedFeatures)
-            # selectedFeatures.clear()
+                $http({
+                    method: 'GET'
+                    url: "http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:select_country_airlines" + "&viewparams=COUNTRY_NAME:" + $scope.selected_country['name'] + "&outputFormat=application%2Fjson"
+                }).then(
+                    (data) ->
+                        airlines = []
+                        $.each( data['features'], 
+                            ( airline ) ->
+                                airlines.push(airline['properties']['name'])
+                        )
+                        $scope.selected_country.airlines = airlines
+                )
+            else
+                $scope.selected_country = {
+                    status: false
+                    name: ''
+                    airlines:[]
+                }
 
             $scope.$apply();
     )
@@ -149,16 +131,6 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
             }
             $scope.$apply();
     )
-
-    ###########################################################################
-    $scope.showAirlines = (country) ->
-        alert(country)
-
-    $scope.showDestinations = (airport_id) ->
-        window.location.href = "/connections_airports/destiny/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
-
-    $scope.showOrigins = (airport_id) ->
-        window.location.href = "/connections_airports/source/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
 
     ###########################################################################
 

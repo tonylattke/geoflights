@@ -3,6 +3,10 @@ class HomeController < ApplicationController
 		request.headers['Access-Control-Allow-Origin'] = '*'
 	end
 
+	def countries
+		
+	end
+
 	def connections_airports
 		@route = params[:route]
 

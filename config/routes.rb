@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   root 'home#index'
   get 'home' => 'home#index'
 
+  get 'countries' => 'home#countries'
+
   get 'connections_airports/:route/:id/:name/:latitude/:longitude' => 'home#connections_airports', :constraints => {:latitude => /\-?\d+(.\d+)?/, :longitude => /\-?\d+(.\d+)?/}
 
   # Example of regular route:
