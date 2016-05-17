@@ -15,7 +15,9 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
     # Countries
 
     countries_source = new ol.source.Vector({
-        url: 'countries.geojson',
+        #url: 'http://openlayers.org/en/v3.15.1/examples/data/geojson/countries.geojson'
+        #url: 'countries.geojson'
+        url: 'http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:countries&outputFormat=application%2Fjson'
         format: new ol.format.GeoJSON()
     })
 
@@ -92,15 +94,15 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
             )
             
             if selected_countries.length > 0
+
                 $scope.selected_country = {
                     status: true
-                    name: selected_countries[0].get('name')
+                    name: selected_countries[0]['U']['NAME']
                     airlines:[]
                 }
 
                 request = "http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:select_country_airlines" + "&viewparams=COUNTRY_NAME:" + $scope.selected_country['name'] + "&outputFormat=application%2Fjson"
-                console.log(request)
-
+                
                 $http({
                     method: 'GET'
                     url: request
@@ -138,6 +140,14 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
             }
             $scope.$apply();
     )
+
+    ###########################################################################
+
+    $scope.selectAirport = ->
+        window.location.href = "/home"
+
+    $scope.selectCountry = ->
+        window.location.href = "/countries"
 
     ###########################################################################
 
@@ -186,4 +196,5 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
         # Reset zoom
         view.setZoom(2.75)
 
+    $scope.$apply();
 ])

@@ -129,12 +129,15 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
                     latitude: coord4326[1]
                 }
                 $scope.$apply();
-        )
-
+        )        
 
     ###########################################################################
 
-        
+    $scope.selectAirport = ->
+        window.location.href = "/home"
+
+    $scope.selectCountry = ->
+        window.location.href = "/countries"
 
     ###########################################################################
 
@@ -247,4 +250,5 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
                 }) 
         })
 
+    $scope.$apply();
 ])

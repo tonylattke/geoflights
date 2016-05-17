@@ -149,6 +149,11 @@ li a:hover {
     color: #00FFFC
 }
 
+.autor:hover {
+    color: #00A4A2;
+    text-decoration: none
+}
+
 .footer-credits {
     padding-top: 20px;
 }

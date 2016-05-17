@@ -31,8 +31,9 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
     # Airports
 
     airports_source = new ol.source.Vector({
-        #url: 'http://openlayers.org/en/v3.15.1/examples/data/geojson/countries.geojson',
-        url: 'airports.json',
+        #url: 'http://openlayers.org/en/v3.15.1/examples/data/geojson/countries.geojson'
+        #url: 'airports.json'
+        url: 'http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:airports&outputFormat=application%2Fjson'
         format: new ol.format.GeoJSON()
     })
 
@@ -151,8 +152,12 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
     )
 
     ###########################################################################
-    $scope.showAirlines = (country) ->
-        alert(country)
+
+    $scope.selectAirport = ->
+        window.location.href = "/home"
+
+    $scope.selectCountry = ->
+        window.location.href = "/countries"
 
     $scope.showDestinations = (airport_id) ->
         window.location.href = "/connections_airports/destiny/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
@@ -207,4 +212,5 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
         # Reset zoom
         view.setZoom(2.75)
 
+    $scope.$apply();
 ])
