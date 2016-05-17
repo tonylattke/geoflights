@@ -1,9 +1,9 @@
 angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$http', ($scope,$http)->
 
     $scope.selected_country = {
-        status: true
-        name: 'Sample'
-        airlines:['1','2']
+        status: false
+        name: ''
+        airlines:[]
     }
     $scope.current_coordinate = {
         longitude: 0,
@@ -92,23 +92,30 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
             )
             
             if selected_countries.length > 0
-                console.log(selected_countries[0])
                 $scope.selected_country = {
                     status: true
                     name: selected_countries[0].get('name')
                     airlines:[]
                 }
 
+                request = "http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:select_country_airlines" + "&viewparams=COUNTRY_NAME:" + $scope.selected_country['name'] + "&outputFormat=application%2Fjson"
+                console.log(request)
+
                 $http({
                     method: 'GET'
-                    url: "http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:select_country_airlines" + "&viewparams=COUNTRY_NAME:" + $scope.selected_country['name'] + "&outputFormat=application%2Fjson"
+                    url: request
                 }).then(
-                    (data) ->
+                    (answer) ->
+                        airlines_raw = answer['data']['features']
+                        
                         airlines = []
-                        $.each( data['features'], 
-                            ( airline ) ->
-                                airlines.push(airline['properties']['name'])
-                        )
+                        
+                        len = answer['data']['features'].length
+                        i = 0
+                        while i < len
+                            airlines.push(airlines_raw[i]['properties']['name'])
+                            i += 1
+
                         $scope.selected_country.airlines = airlines
                 )
             else
