@@ -136,14 +136,14 @@ li a:hover {
 }
 
 .airlines {
-    max-height: 185px;
+    max-height: 165px;
     overflow-y: scroll;
     overflow-x: hidden;
     overflow: auto;
 }
 
 .countries {
-    max-height: 185px;
+    max-height: 165px;
     overflow-y: scroll;
     overflow-x: hidden;
     overflow: auto;
@@ -169,6 +169,14 @@ li a:hover {
       background-color: black;
 }
 
+.button {
+    text-decoration: none;
+    color: #000000;
+    background: #00FFFC;
+    height: 40px;
+    padding-top: 10px;
+    cursor: pointer;
+}
 
 /* ----------------------------      Footer      --------------------------- */
 

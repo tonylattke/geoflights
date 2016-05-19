@@ -1,0 +1,17 @@
+<% content_for :app_controller do %>
+  ng-app='app.geoflightsApp' ng-controller='AirlineAirportsCtrl' ng-init="init('<%= @airline_id %>', '<%= @airline_name %>')"
+<% end %>
+
+<div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid navmenu-float">
+    <ul class="nav navmenu-nav">
+        <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
+        <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
+    </ul>
+</div>
+
+<div class="col-md-12 status">
+    <div>
+        <h3>Selected Airline</h3>
+        <p>{{ airline.name }}</p>
+    </div>
+</div>

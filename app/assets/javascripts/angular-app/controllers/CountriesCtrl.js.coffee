@@ -13,6 +13,7 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
     $scope.selected_airline = {
         countries:[]
         airline: {
+            id: 0
             name: ''
             selected: false
         }
@@ -142,6 +143,7 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
                 $scope.selected_airline = {
                     countries:[]
                     airline: {
+                        id: 0
                         name: ''
                         selected: false
                     }
@@ -164,7 +166,7 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
     $scope.selectAirline = (airline) ->
         $scope.selected_airline['airline']['selected'] = false
         airline['selected'] = true
-        
+
         request = "http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:select_airline_countries" + "&viewparams=AIRLINE_ID:" + airline['id'] + "&outputFormat=application%2Fjson"
         $http({
             method: 'GET'
@@ -198,6 +200,9 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
 
     $scope.selectCountry = ->
         window.location.href = "/countries"
+
+    $scope.showAirline = ->
+        window.location.href = "/airline/" + $scope.selected_airline['airline']['id'] + "/" + $scope.selected_airline['airline']['name']
 
     ###########################################################################
 

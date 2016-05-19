@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   get 'connections_airports/:route/:id/:name/:longitude/:latitude' => 'home#connections_airports', :constraints => {:name => /[A-Za-z0-9 ,.?!%&()'@$-_:;\"\\]+/, :latitude => /\-?\d+(.\d+)?/, :longitude => /\-?\d+(.\d+)?/}
 
+  get 'airline/:id/:name' => 'home#airline_airports', :constraints => {:name => /[A-Za-z0-9 ,.?!%&()'@$-_:;\"\\]+/}
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

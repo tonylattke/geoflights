@@ -15,4 +15,9 @@ class HomeController < ApplicationController
 		@airport_latitude = params[:latitude]
 		@airport_longitude = params[:longitude]
 	end
+
+	def airline_airports
+		@airline_id = params[:id]
+		@airline_name = params[:name]
+	end
 end

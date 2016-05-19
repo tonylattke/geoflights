@@ -4,8 +4,8 @@
 
 <div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid navmenu-float">
     <ul class="nav navmenu-nav">
-        <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
-        <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
+        <li><a class="text-center" href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
+        <li><a class="text-center" href="#" ng-click="resetZoom()">Reset Zoom</a></li>
     </ul>
 </div>
 
@@ -29,7 +29,9 @@
             <p ng-if="selected_airline.countries.length == 0">
                 No coutries connected with this airline
             </p>
+            <div class="button text-center" ng-click="showAirline()">
+                Show Airports of this Airline
+            </div>
         </div>
-        
     </div>
 </div>
