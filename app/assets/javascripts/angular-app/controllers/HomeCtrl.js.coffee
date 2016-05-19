@@ -114,7 +114,7 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
             )
             
             if selected_countries.length > 0
-                console.log(selected_countries[0])
+                #console.log(selected_countries[0])
                 $scope.selected_airport = {
                     status: true
                     id: selected_countries[0].get('airport_id'),
@@ -160,10 +160,10 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
         window.location.href = "/countries"
 
     $scope.showDestinations = (airport_id) ->
-        window.location.href = "/connections_airports/destiny/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
+        window.location.href = "/connections_airports/destiny/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.longitude + "/" + $scope.selected_airport.latitude
 
     $scope.showOrigins = (airport_id) ->
-        window.location.href = "/connections_airports/source/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.latitude + "/" + $scope.selected_airport.longitude
+        window.location.href = "/connections_airports/source/" + $scope.selected_airport.id + "/" + $scope.selected_airport.name + "/" + $scope.selected_airport.longitude + "/" + $scope.selected_airport.latitude
 
     ###########################################################################
 
@@ -212,5 +212,5 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
         # Reset zoom
         view.setZoom(2.75)
 
-    $scope.$apply();
+    #$scope.$apply();
 ])

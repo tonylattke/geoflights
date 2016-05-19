@@ -115,7 +115,11 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
                         len = answer['data']['features'].length
                         i = 0
                         while i < len
-                            airlines.push(airlines_raw[i]['properties']['name'])
+                            airline = {
+                                id: airlines_raw[i]['properties']['airline_id']
+                                name: airlines_raw[i]['properties']['name']
+                            }
+                            airlines.push(airline)
                             i += 1
 
                         $scope.selected_country.airlines = airlines
@@ -196,5 +200,5 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
         # Reset zoom
         view.setZoom(2.75)
 
-    $scope.$apply();
+    #$scope.$apply();
 ])

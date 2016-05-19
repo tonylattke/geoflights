@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   get 'countries' => 'home#countries'
 
-  get 'connections_airports/:route/:id/:name/:latitude/:longitude' => 'home#connections_airports', :constraints => {:latitude => /\-?\d+(.\d+)?/, :longitude => /\-?\d+(.\d+)?/}
+  get 'connections_airports/:route/:id/:name/:longitude/:latitude' => 'home#connections_airports', :constraints => {:name => /[A-Za-z0-9 ,.?!%&()'@$-_:;\"\\]+/, :latitude => /\-?\d+(.\d+)?/, :longitude => /\-?\d+(.\d+)?/}
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

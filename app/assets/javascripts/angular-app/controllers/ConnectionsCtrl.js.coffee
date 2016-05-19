@@ -1,4 +1,4 @@
-angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($scope)->
+angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', '$http', ($scope,$http)->
 
     $scope.current_coordinate = {
         longitude: 0,
@@ -16,14 +16,14 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
 
     ################################    Init   ################################
 
-    $scope.init = (route, airport_id, airport_name, airport_latitude, airport_longitude) ->
+    $scope.init = (route, airport_id, airport_name, airport_longitude, airport_latitude) ->
         $scope.route = route
 
         $scope.airport = {
             id: airport_id
             name: airport_name
-            latitude: airport_latitude
-            longitude: airport_longitude
+            latitude: parseFloat(airport_latitude)
+            longitude: parseFloat(airport_longitude)
         }
 
         ################################   Layers  ################################
@@ -60,36 +60,22 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
             source:  airports_source
         })
 
+        # Arcs
 
-        airports_styles = [
-            new ol.style.Style({
-                image: new ol.style.Circle({
-                  radius: 3,
-                  stroke: new ol.style.Stroke({
-                    color: 'white',
-                    width: 1
-                  }),
-                  fill: new ol.style.Fill({
-                    color: '#00FFFC'
-                  })
-                })
-              })
-        ]
+        arcsVector = new ol.source.Vector()
 
-        ### test ###
-        lineLayer = drawRoutes()
-
-        ### test ###
+        arcs_map_layer = new ol.layer.Vector({
+            source: arcsVector
+            style: new ol.style.Style()
+        })
         
-        pointLayer = drawAirport()
 
         # Main layers list
 
         _layers = [
             countries_layer,
-            #lineLayer,
             airports_layer,
-            #pointLayer
+            arcs_map_layer
         ]
 
         ################################ Controls #################################
@@ -118,6 +104,9 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
             controls: controls
         })
 
+
+        
+
         ###########################################################################
         
         $scope.map.on('pointermove', 
@@ -129,7 +118,42 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
                     latitude: coord4326[1]
                 }
                 $scope.$apply();
-        )        
+        )
+
+        layer_connection = 'kss:'
+        if $scope.route == 'destiny'
+            layer_connection += 'select_destiny_airports'
+        else
+            layer_connection += 'select_source_airports'
+
+
+        request = "http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=" + layer_connection + "&viewparams=S_AIRPORT_ID:" + $scope.airport.id + "&outputFormat=application%2Fjson"
+        $http({
+            method: 'GET'
+            url: request
+        }).then(
+            (answer) ->
+                
+                airports_raw = answer['data']['features']
+                
+                len = answer['data']['features'].length
+                i = 0                
+                while i < len
+                    airport_aux = {
+                        id: airports_raw[i]['properties']['airport_id']
+                        name: airports_raw[i]['properties']['name']
+                        longitude: parseFloat(airports_raw[i]['properties']['longitude'])
+                        latitude: parseFloat(airports_raw[i]['properties']['latitude'])
+                    }
+                    pointA = projectCoord([$scope.airport['longitude'], $scope.airport['latitude']])
+                    pointB = projectCoord([airport_aux['longitude'], airport_aux['latitude']])
+                    
+                    arcFeature = createArcBetweenPoints(pointA, pointB)
+                    arcsVector.addFeature(arcFeature)
+                
+                    i += 1
+                
+        )
 
     ###########################################################################
 
@@ -186,69 +210,48 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', ($
         # Reset zoom
         view.setZoom(2.75)
 
-    drawRoutes = ->
-        coords = [[-65.65, 10.10], [0, 0]]
-        lineString = new ol.geom.LineString(coords)
+    projectCoord = (coordinate) ->
+      coord = ol.proj.transform(coordinate, 'EPSG:4326', 'EPSG:3857')
+      point = new ol.geom.Point(coord)
+      return point
 
-        lineString.transform('EPSG:4326', 'EPSG:3857')
-
-        # create the feature
+    createArcBetweenPoints = (pointA, pointB) ->
+        transformedA = pointA.transform('EPSG:3857', 'EPSG:4326')
+        transformedB = pointB.transform('EPSG:3857', 'EPSG:4326')
+        start = {
+            x: transformedA.getCoordinates()[0]
+            y: transformedA.getCoordinates()[1]
+        }
+        end = {
+            x: transformedB.getCoordinates()[0]
+            y: transformedB.getCoordinates()[1]
+        }
+        generator = new arc.GreatCircle(start, end, {
+            'name': ''
+        })
+        line = generator.Arc(100, {
+            offset: 10
+        })
+        coordinates = line.geometries[0].coords
+        lineString = new ol.geom.LineString(coordinates)
+        geom = lineString.transform('EPSG:4326', 'EPSG:3857')
         feature = new ol.Feature({
-            geometry: lineString
-            name: 'Line'
+            'geometry': geom
         })
 
-        lineStyle = new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: '#00FFFC'
-                width: 5
+        # Adds an arrow
+        lineStyles = [
+            new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: '#00FFFC'
+                    width: 2
+                })
             })
-        })
+        ]
 
-        source = new ol.source.Vector({
-            features: [feature]
-        })
-        vector = new ol.layer.Vector({
-            source: source
-            style: [lineStyle]
-        })
+        feature.setStyle(lineStyles)
 
-        return vector
+        return feature
 
-    drawAirport = ->
-        iconStyle = new ol.style.Style({
- 
-          image: new ol.style.Circle({
-              radius: 10
-              fill: new ol.style.Fill({
-                  color: '#00FFFC'
-              }),
-              stroke: new ol.style.Stroke({
-                  color: '#FFFFFF'
-                  width: 3
-              })
-          })
-          zIndex: 1
-            
-        })
-
-        icons = []
-        lon = $scope.airport.longitude
-        lat = $scope.airport.latitude
-        iconFeature = new ol.Feature(
-            { 
-                geometry: new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:3857', 'EPSG:4326'))
-            })
-        aaa = new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'))        
-        console.log(aaa)
-        iconFeature.setStyle(iconStyle)
-        icons.push(iconFeature)
-        pointLayer = new ol.layer.Vector({ 
-            source: new ol.source.Vector(
-                { 
-                    features: icons 
-                }) 
-        })
-
-    $scope.$apply();
+    #$scope.$apply();
 ])
