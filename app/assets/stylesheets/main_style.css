@@ -44,6 +44,10 @@ h1::after {
   }
 }
 
+.buttons-p {
+    padding-top: 15px;
+}
+
 /* ----------------------------       Map        --------------------------- */
 
 .map-background {
@@ -91,7 +95,7 @@ h1::after {
 /* ----------------------------      Status      --------------------------- */
 
 .status {
-    height: 450px;
+    height: 540px;
 }
 
 .coordinates {
@@ -115,8 +119,31 @@ li a:hover {
     background: #00A4A2;
 }
 
+.airline-noselected {
+    cursor: pointer;
+}
+
+.airline-noselected:hover {
+    background: #cccccc;
+    color: #000000;
+}
+
+.airline-selected {
+    text-decoration: none;
+    color: #000000;
+    background: #00FFFC;
+    cursor: pointer;
+}
+
 .airlines {
-    max-height: 320px;
+    max-height: 185px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow: auto;
+}
+
+.countries {
+    max-height: 185px;
     overflow-y: scroll;
     overflow-x: hidden;
     overflow: auto;

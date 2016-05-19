@@ -28,22 +28,35 @@
 <body <%= yield :app_controller %>>
 
     <div class="container-fluid">
-        <h1>
-            <%= image_tag("logo_tony.png", :alt => "rss feed", :id => "logo") %>
-            Geoflights Lattke
-        </h1>
-        <div class="row-fluid">
-            <div class="col-md-2">
-                <div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid navmenu-float">
-                    <ul class="nav navmenu-nav">
-                        <li title="Select airports on the map and show information">
-                            <a href="#" ng-click="selectAirport()">Select Airport</a>
-                        </li>
-                        <li title="Select countries and show available airlines on country">
-                            <a href="#" ng-click="selectCountry()">Select Country</a>
-                        </li>
-                    </ul>
+        <div class="row-fluid col-md-12">
+            <div class="col-md-9">
+                <h1>
+                    <%= image_tag("logo_tony.png", :alt => "rss feed", :id => "logo") %>
+                    Geoflights Lattke
+                </h1>
+            </div>
+            <div class="col-md-3 buttons-p">
+                <div class="row-fluid">
+                    <div class="col-md-6">
+                        <ul class="nav navmenu-nav">
+                            <li title="Select airports on the map and show information">
+                                <a href="#" ng-click="selectAirport()">Select Airport</a>
+                            </li>
+                        </ul>
+                    </div> 
+                    <div class="col-md-6">
+                        <ul class="nav navmenu-nav">
+                            <li title="Select countries and show available airlines on country">
+                                <a href="#" ng-click="selectCountry()">Select Country</a>
+                            </li>
+                        </ul>
+                    </div> 
                 </div>
+                
+            </div>
+        </div>
+        <div class="row-fluid col-md-12">
+            <div class="col-md-2">
                 <%= yield %>
                 <div class="col-md-12 coordinates">
                     <div>

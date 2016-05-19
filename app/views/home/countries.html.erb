@@ -15,9 +15,21 @@
         <p><b>{{selected_country.name}}</b></p>
         <p>Available Airlines:</p>
         <ul class="airlines">
-            <li ng-repeat="airline in selected_country.airlines">
+            <li ng-repeat="airline in selected_country.airlines" ng-click="selectAirline(airline)" class="{{ airline.selected ? 'airline-selected' : 'airline-noselected' }}">
                 {{airline.name}}
             </li>
         </ul>
+        <div ng-if="selected_airline.airline.selected == true">
+            <p>Is connected with:</p>
+            <ul class="countries">
+                <li ng-repeat="country in selected_airline.countries">
+                    {{country.name}}
+                </li>
+            </ul>
+            <p ng-if="selected_airline.countries.length == 0">
+                No coutries connected with this airline
+            </p>
+        </div>
+        
     </div>
 </div>

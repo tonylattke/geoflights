@@ -9,6 +9,14 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
         longitude: 0,
         latitude: 0
     }
+
+    $scope.selected_airline = {
+        countries:[]
+        airline: {
+            name: ''
+            selected: false
+        }
+    }
     
     ################################   Layers  ################################
 
@@ -118,6 +126,7 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
                             airline = {
                                 id: airlines_raw[i]['properties']['airline_id']
                                 name: airlines_raw[i]['properties']['name']
+                                selected: false
                             }
                             airlines.push(airline)
                             i += 1
@@ -129,6 +138,13 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
                     status: false
                     name: ''
                     airlines:[]
+                }
+                $scope.selected_airline = {
+                    countries:[]
+                    airline: {
+                        name: ''
+                        selected: false
+                    }
                 }
 
             $scope.$apply();
@@ -144,6 +160,36 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
             }
             $scope.$apply();
     )
+
+    $scope.selectAirline = (airline) ->
+        $scope.selected_airline['airline']['selected'] = false
+        airline['selected'] = true
+        
+        request = "http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:select_airline_countries" + "&viewparams=AIRLINE_ID:" + airline['id'] + "&outputFormat=application%2Fjson"
+        $http({
+            method: 'GET'
+            url: request
+        }).then(
+            (answer) ->
+                airline['selected'] = true
+                $scope.selected_airline['airline'] = airline
+
+                countries_raw = answer['data']['features']
+                
+                countries = []
+                
+                len = answer['data']['features'].length
+                i = 0
+                while i < len
+                    country = {
+                        name: countries_raw[i]['properties']['country']
+                    }
+                    countries.push(country)
+                    i += 1
+
+                $scope.selected_airline['countries'] = countries
+                console.log(countries)
+        )
 
     ###########################################################################
 
@@ -199,6 +245,21 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
     $scope.resetZoom = ->
         # Reset zoom
         view.setZoom(2.75)
+
+    $scope.selectCou = ->
+        # A normal select interaction to handle click
+        select = new ol.interaction.Select({condition: ol.events.condition.click})
+        $scope.map.addInteraction(select)
+
+        select.getFeatures().clear()
+
+        countries_source.forEachFeature(
+            (country_feature) ->
+                if country_feature.get('NAME') is 'Venezuela'
+                    select.getFeatures().push(country_feature)
+        )
+
+        console.log("asd")
 
     #$scope.$apply();
 ])
