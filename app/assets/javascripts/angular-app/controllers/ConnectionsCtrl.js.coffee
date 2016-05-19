@@ -69,13 +69,15 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', '$
             style: new ol.style.Style()
         })
         
+        airport_layer = drawAirport()
 
         # Main layers list
 
         _layers = [
             countries_layer,
             airports_layer,
-            arcs_map_layer
+            arcs_map_layer,
+            airport_layer
         ]
 
         ################################ Controls #################################
@@ -103,9 +105,6 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', '$
             view: view,
             controls: controls
         })
-
-
-        
 
         ###########################################################################
         
@@ -252,6 +251,42 @@ angular.module('app.geoflightsApp').controller("ConnectionsCtrl", [ '$scope', '$
         feature.setStyle(lineStyles)
 
         return feature
+
+    drawAirport = ->
+        iconStyle = new ol.style.Style({
+ 
+          image: new ol.style.Circle({
+              radius: 10
+              fill: new ol.style.Fill({
+                  color: '#00FFFC'
+              }),
+              stroke: new ol.style.Stroke({
+                  color: '#FFFFFF'
+                  width: 3
+              })
+          })
+          zIndex: 1
+            
+        })
+
+        icons = []
+        lon = $scope.airport.longitude
+        lat = $scope.airport.latitude
+        iconFeature = new ol.Feature(
+            { 
+                geometry: projectCoord([lon, lat])
+            })
+        #aaa = new ol.geom.Point(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'))        
+        iconFeature.setStyle(iconStyle)
+        icons.push(iconFeature)
+        pointLayer = new ol.layer.Vector({ 
+            source: new ol.source.Vector(
+                { 
+                    features: icons 
+                }) 
+        })
+
+        return pointLayer
 
     #$scope.$apply();
 ])

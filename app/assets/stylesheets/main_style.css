@@ -50,6 +50,10 @@ h1::after {
 
 /* ----------------------------       Map        --------------------------- */
 
+.fade-box {
+  animation: input-entry 3s ease-in; 
+}
+
 .map-background {
     background-color: #000000;
     border-style: solid;
@@ -208,4 +212,13 @@ li a:hover {
         background: none;
         border: none;
     }
+}
+
+@keyframes input-entry {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
