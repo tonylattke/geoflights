@@ -25,8 +25,8 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
 
     countries_source = new ol.source.Vector({
         #url: 'http://openlayers.org/en/v3.15.1/examples/data/geojson/countries.geojson'
-        #url: 'countries.geojson'
-        url: 'http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:countries&outputFormat=application%2Fjson'
+        url: 'countries.geojson'
+        #url: 'http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:countries&outputFormat=application%2Fjson'
         format: new ol.format.GeoJSON()
     })
 
@@ -34,7 +34,7 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
         new ol.style.Style({
               stroke: new ol.style.Stroke({
                 color: '#00FFFC',
-                width: 1
+                width: 2
               }),
               fill: new ol.style.Fill({
                 color: '#004241'
@@ -121,10 +121,11 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
             )
             
             if selected_countries.length > 0
-
+                console.log(selected_countries[0])
                 $scope.selected_country = {
                     status: true
-                    name: selected_countries[0]['U']['NAME']
+                    #name: selected_countries[0]['U']['NAME']
+                    name: selected_countries[0]['U']['name']
                     airlines:[]
                 }
 

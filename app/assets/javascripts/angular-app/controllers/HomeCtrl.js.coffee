@@ -33,8 +33,8 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
 
     airports_source = new ol.source.Vector({
         #url: 'http://openlayers.org/en/v3.15.1/examples/data/geojson/countries.geojson'
-        #url: 'airports.json'
-        url: 'http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:airports&outputFormat=application%2Fjson'
+        url: 'airports.json'
+        #url: 'http://localhost:8080/geoserver/kss/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kss:airports&outputFormat=application%2Fjson'
         format: new ol.format.GeoJSON()
     })
 
