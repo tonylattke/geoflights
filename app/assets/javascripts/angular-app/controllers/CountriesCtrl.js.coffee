@@ -42,6 +42,16 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
           })
     ]
 
+    countries_styles_selected = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#00FFFC',
+            width: 3
+        })
+        fill: new ol.style.Fill({
+            color: '#007574'
+        })
+    })
+
     countries_layer = new ol.layer.Vector({
         source: countries_source
         style: countries_styles
@@ -82,7 +92,15 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
     ###########################################################################
 
     # A normal select interaction to handle click
-    select = new ol.interaction.Select({condition: ol.events.condition.click})
+    select = new ol.interaction.Select(
+        {
+            condition: ol.events.condition.click
+            layers: 
+                (layer) ->
+                    return layer.get('selectable') == true
+            style: [countries_styles_selected]
+        })
+    countries_layer.set('selectable', true);
     $scope.map.addInteraction(select)
 
     selected_countries = []
@@ -133,6 +151,15 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
                             i += 1
 
                         $scope.selected_country.airlines = airlines
+
+                        $scope.selected_airline = {
+                            countries:[]
+                            airline: {
+                                id: 0
+                                name: ''
+                                selected: false
+                            }
+                        }
                 )
             else
                 $scope.selected_country = {
@@ -163,6 +190,18 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
             $scope.$apply();
     )
 
+    selectCountriesOnMap = ->
+        select.getFeatures().clear()
+        countries_source.forEachFeature(
+            (country_feature) ->
+                len = $scope.selected_airline['countries'].length
+                i = 0
+                while i < len
+                    if country_feature.get('NAME') is $scope.selected_airline['countries'][i]['name']
+                        select.getFeatures().push(country_feature)
+                    i += 1
+        )
+
     $scope.selectAirline = (airline) ->
         $scope.selected_airline['airline']['selected'] = false
         airline['selected'] = true
@@ -190,7 +229,8 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
                     i += 1
 
                 $scope.selected_airline['countries'] = countries
-                console.log(countries)
+
+                #selectCountriesOnMap()
         )
 
     ###########################################################################
@@ -250,21 +290,6 @@ angular.module('app.geoflightsApp').controller("CountriesCtrl", [ '$scope', '$ht
     $scope.resetZoom = ->
         # Reset zoom
         view.setZoom(2.75)
-
-    $scope.selectCou = ->
-        # A normal select interaction to handle click
-        select = new ol.interaction.Select({condition: ol.events.condition.click})
-        $scope.map.addInteraction(select)
-
-        select.getFeatures().clear()
-
-        countries_source.forEachFeature(
-            (country_feature) ->
-                if country_feature.get('NAME') is 'Venezuela'
-                    select.getFeatures().push(country_feature)
-        )
-
-        console.log("asd")
 
     #$scope.$apply();
 ])

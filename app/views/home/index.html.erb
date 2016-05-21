@@ -12,7 +12,9 @@
 <div class="col-md-12 status">
     <div ng-if="selected_airport.status">
         <h3>Selected Airport</h3>
-        <p><b>{{selected_airport.name}}</b> ({{selected_airport.country}})</p>
+        <h4><b>{{selected_airport.name}}</b></h4>
+        <p><b>City:</b> {{selected_airport.city}}</p>
+        <p><b>Country:</b> {{selected_airport.country}}</p>
         <p><b>Longitude:</b> {{selected_airport.longitude}}</p>
         <p><b>Latitude:</b> {{selected_airport.latitude}}</p>
         <li ng-click="showDestinations(selected_airport.id)"><a>Show destinations</a></li>

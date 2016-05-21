@@ -5,6 +5,7 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
         id: 0
         name: ''
         country: ''
+        city: ''
         latitude: 0
         longitude: 0
     }
@@ -52,6 +53,19 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
           })
     ]
 
+    airports_styles_selected = new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 10,
+            stroke: new ol.style.Stroke({
+                color: '#007574',
+                width: 4
+            }),
+            fill: new ol.style.Fill({
+                color: '#FFFFFF'
+            })
+        })
+    })
+
     airports_layer = new ol.layer.Vector({
         source: airports_source,
         style: airports_styles
@@ -93,7 +107,15 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
     ###########################################################################
 
     # A normal select interaction to handle click
-    select = new ol.interaction.Select({condition: ol.events.condition.click})
+    select = new ol.interaction.Select(
+        {
+            condition: ol.events.condition.click
+            layers: 
+                (layer) ->
+                    return layer.get('selectable') == true
+            style: [airports_styles_selected]
+        })
+    airports_layer.set('selectable', true);
     $scope.map.addInteraction(select)
 
     selected_countries = []
@@ -120,6 +142,7 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
                     id: selected_countries[0].get('airport_id'),
                     name: selected_countries[0].get('name'),
                     country: selected_countries[0].get('country')
+                    city: selected_countries[0].get('city')
                     latitude: selected_countries[0].get('latitude')
                     longitude: selected_countries[0].get('longitude')
                 }
@@ -129,6 +152,7 @@ angular.module('app.geoflightsApp').controller("HomeCtrl", [ '$scope', ($scope)-
                     id: 0
                     name: ''
                     country: ''
+                    city: ''
                     latitude: 0
                     longitude: 0
                 }
