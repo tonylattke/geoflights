@@ -96,7 +96,7 @@ angular.module('app.geoflightsApp').controller("AirlineAirportsCtrl", [ '$scope'
     ###########################################################################
 
     $scope.selectAirport = ->
-        window.location.href = "/home"
+        window.location.href = "/airports"
 
     $scope.selectCountry = ->
         window.location.href = "/countries"

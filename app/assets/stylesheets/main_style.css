@@ -1,5 +1,9 @@
 /* ---------------------------- General settings --------------------------- */
 
+* {
+  box-sizing: border-box;
+}
+
 body {
     background-color: #000000;
     color: #00FFFC;
@@ -46,6 +50,90 @@ h1::after {
 
 .buttons-p {
     padding-top: 15px;
+}
+
+/* ---------------------------------  Home --------------------------------- */
+
+.home-box {
+  height: 100%;
+  text-align: center;
+  width: 100%;
+}
+
+.stark-login form {
+    animation: form-entry 3s ease-in-out; 
+    background: #111;
+    background: linear-gradient(#004746, #111);
+    border: 6px solid #00A4A2;
+    box-shadow: 0 0 15px #00fffd;
+    border-radius: 5px;
+    display: inline-block;
+    height: 120px;
+    margin: 300px auto 0;
+    z-index: 4;
+    width: 500px;
+    transition: 1s all ;
+}
+
+.stark-login form:hover {
+    border: 6px solid #00fffd;
+    box-shadow: 0 0 25px #00fffd;
+    transition: 1s all ;
+}
+
+button { 
+    animation: input-entry 4.5s ease-in; 
+    border: 1px solid #444;
+    border-left-color: #000; 
+    border-radius: 5px;
+    box-shadow: 0 2px 0 #000;
+    display: block;
+    font-family: 'Cabin', helvetica, arial, sans-serif;
+    font-size: 30px;
+    font-weight: 200;
+    line-height: 40px;
+    margin: 20px auto; 
+    text-shadow: 0 -1px 0 #000;
+    width: 400px;
+    transition: 1s all ;
+    text-decoration: none;
+    color: #000000;
+    background: #00FFFC;
+    height: 70px;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    text-decoration: none;
+    color: #000000;
+    background: #00A4A2;
+}  
+
+#circle1 { 
+  background: #000;
+  border-radius: 50%;
+  border: 10px solid #00A4A2;
+  box-shadow:0 0 0 2px black, 0 0 0 6px  #00FFFC;
+  height: 500px;
+  width: 500px;
+  margin-top: 100px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  margin-left: -250px;
+  overflow: hidden;
+  opacity: 0.4;
+   z-index: -3; 
+}
+
+#inner-cirlce1 {
+  background: #000; 
+  border-radius: 50%;
+  border: 36px solid #00FFFC; 
+  height: 460px; 
+  width: 460px; 
+  margin: 10px;
 }
 
 /* ----------------------------       Map        --------------------------- */
@@ -214,10 +302,55 @@ li a:hover {
     }
 }
 
+@keyframes form-entry {
+  0% {
+    height:0;
+    width: 0;
+    opacity: 0;   
+    padding: 0;
+  } 
+  20% {
+    height: 0;
+    border: 1px solid #00FFFC;
+    width: 0;
+    opacity: 0;  
+    padding: 0; 
+  } 
+  
+  
+  40% {
+    width: 0;
+    height: 120px;
+    border: 6px solid #00A4A2; 
+    opacity: 1 ; 
+    padding: 0;
+  }
+  
+  100% {
+    height: 120px; 
+    width: 500px;   
+  }
+}
+
+
 @keyframes input-entry {
   0% {
-    opacity: 0;
+    height:0;
+    opacity: 0;   
+    padding: 0;
   }
+  
+  50% {
+    height:0;
+    opacity: 0;   
+    padding: 0;
+  }
+
+  60% {    
+    height: 70px;
+  }
+  
+
   100% {
     opacity: 1;
   }

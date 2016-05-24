@@ -2,22 +2,19 @@
   ng-app='app.geoflightsApp' ng-controller='HomeCtrl'
 <% end %>
 
-<div class="navmenu navmenu-default navmenu-fixed-left offcanvas in canvas-slid navmenu-float">
-    <ul class="nav navmenu-nav">
-        <li><a href="#" ng-click="resetCamera()">Reset origin of camera</a></li>
-        <li><a href="#" ng-click="resetZoom()">Reset Zoom</a></li>
-    </ul>
-</div>
+<div class="home-box">
+    <section class="stark-login">
+        <form action="" method="">  
+            <div id="fade-box">
+                <button ng-click="access()">Access</button> 
+            </div>
+        </form>
+    </section> 
 
-<div class="col-md-12 status">
-    <div ng-if="selected_airport.status">
-        <h3>Selected Airport</h3>
-        <h5><b>{{selected_airport.name}}</b></h5>
-        <p><b>City:</b> {{selected_airport.city}}</p>
-        <p><b>Country:</b> {{selected_airport.country}}</p>
-        <p><b>Longitude:</b> {{selected_airport.longitude}}</p>
-        <p><b>Latitude:</b> {{selected_airport.latitude}}</p>
-        <li ng-click="showDestinations(selected_airport.id)"><a>Show destinations</a></li>
-        <li ng-click="showOrigins(selected_airport.id)"><a>Show origins</a></li>
+    <div id="circle1">
+        <div id="inner-cirlce1">
+            <h2> </h2>
+        </div>
     </div>
+
 </div>

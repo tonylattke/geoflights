@@ -1,6 +1,12 @@
 class HomeController < ApplicationController
+	
+
 	def index
-		request.headers['Access-Control-Allow-Origin'] = '*'
+		render layout: 'home_layout'
+	end
+
+	def airports
+		
 	end
 
 	def countries
